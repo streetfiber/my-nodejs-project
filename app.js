@@ -134,8 +134,6 @@ app.get('/midtrans-finish', (req, res) => {
 
     // Ambil detail pembayaran berdasarkan order_id
     const paymentDetail = paymentData.find(payment => payment.order_id === order_id);
-    const status = 'Paid';
-    status_message = status;
     // Periksa status transaksi dan tampilkan hasil ke pengguna
     if (paymentDetail) {
         res.send(`
