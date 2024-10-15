@@ -130,11 +130,12 @@ app.post('/midtrans-notification', async (req, res) => {
 });
 
 app.get('/midtrans-finish', (req, res) => {
-    const { order_id } = req.query;
+    const { status_message, order_id } = req.query;
 
     // Ambil detail pembayaran berdasarkan order_id
     const paymentDetail = paymentData.find(payment => payment.order_id === order_id);
-
+    const status = 'Paid';
+    status_message = status;
     // Periksa status transaksi dan tampilkan hasil ke pengguna
     if (paymentDetail) {
         res.send(`
