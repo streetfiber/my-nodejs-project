@@ -193,22 +193,6 @@ app.get('/midtrans-finish', (req, res) => {
             </html>
         `);
         // Kirim data pembayaran ke BotController
-        try {
-            const botResponse = axios.post('http://localhost:3000/bot-payment-finish', { 
-                name: paymentDetail.name,
-                whatsapp: paymentDetail.whatsapp,
-                jumlah_orang: paymentDetail.jumlah_orang,
-                tanggal_foto: paymentDetail.tanggal_foto,
-                jam_foto: paymentDetail.jam_foto,
-                harga_total: paymentDetail.harga_total,
-                order_id: paymentDetail.order_id,
-                transaction_status: status_message
-            });
-
-            console.log('Data pembayaran dikirim ke BotController:', botResponse.data);
-        } catch (error) {
-            console.error('Gagal kirim data ke BotController:', error);
-        }
     } else {
         res.status(404).send('Transaksi tidak ditemukan.');
     }
