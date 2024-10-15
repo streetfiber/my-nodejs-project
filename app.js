@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
+// Midtrans API Client initialization (Ensure midtrans-client is required)
+const midtransClient = require('midtrans-client');
 
 const app = express();
 app.use(cors());
