@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-// Midtrans API Client initialization (Ensure midtrans-client is required)
 const midtransClient = require('midtrans-client');
 const axios = require('axios');
+const fetch = require('node-fetch');
 
 const app = express();
 app.use(cors());
@@ -17,32 +17,16 @@ const paymentData = [];
 const CLIENT_KEY = 'SB-Mid-client-HtrBVqThPeJpzv-l'; // Client Key langsung dimasukkan
 const SERVER_KEY = 'SB-Mid-server-9cEe9pBpmC8XuB0zOw-A-Huq'; // Server Key langsung dimasukkan
 
-
-// Endpoint untuk memeriksa ketersediaan waktu dan tanggal
-app.post('/check-booking', async (req, res) => {
+app.get('/check-availability', async (req, res) => {
     try {
-        const { tanggal_foto, jam_foto } = req.body;
-
-        // Memanggil Google Apps Script untuk memeriksa ketersediaan booking
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbw7qRvhQeKEt2-zQ6mvnU1jdghL3WtuLp9Jh-00BdKeJHdBtWSs8YyLJCzZ6g3uDZRWtQ/exec';
-        
-        const response = await axios.post(scriptUrl, {
-            tanggal_foto,
-            jam_foto
-        });
-
-        // Mengecek apakah ada booking yang sudah ada
-        if (response.data.available) {
-            res.json({ available: true });
-        } else {
-            res.json({ available: false });
-        }
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzRBxkZxSbD8iNZk3yw79MFS4kVeqdUFbDE2iJ7WUDH14U2aZJPEuf4IgTuE2dyb9WCWA/exec');
+        const bookings = await response.json();
+        res.json(bookings);
     } catch (error) {
-        console.error('Error checking booking:', error);
-        res.status(500).json({ error: 'Error checking booking availability' });
+        console.error('Error fetching bookings:', error);
+        res.status(500).json({ error: 'Error fetching bookings' });
     }
 });
-
 
 // Endpoint untuk membuat link pembayaran Midtrans
 app.post('/midtrans-payment', async (req, res) => {
@@ -144,7 +128,6 @@ app.post('/midtrans-notification', async (req, res) => {
                     headers: { 'Content-Type': 'application/json' }
                 });
             }
-
         }
 
         // Kirim respons sukses ke Midtrans
@@ -160,6 +143,7 @@ app.get('/midtrans-finish', (req, res) => {
 
     // Ambil detail pembayaran berdasarkan order_id
     const paymentDetail = paymentData.find(payment => payment.order_id === order_id);
+
     // Periksa status transaksi dan tampilkan hasil ke pengguna
     if (paymentDetail) {
         res.send(`
@@ -217,7 +201,7 @@ app.get('/midtrans-finish', (req, res) => {
             </body>
             </html>
         `);
-        // Kirim data pembayaran ke BotController
+        
     } else {
         res.status(404).send('Transaksi tidak ditemukan.');
     }
