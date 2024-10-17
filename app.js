@@ -18,6 +18,31 @@ const CLIENT_KEY = 'SB-Mid-client-HtrBVqThPeJpzv-l'; // Client Key langsung dima
 const SERVER_KEY = 'SB-Mid-server-9cEe9pBpmC8XuB0zOw-A-Huq'; // Server Key langsung dimasukkan
 
 
+// Endpoint untuk memeriksa ketersediaan waktu dan tanggal
+app.post('/check-booking', async (req, res) => {
+    try {
+        const { tanggal_foto, jam_foto } = req.body;
+
+        // Memanggil Google Apps Script untuk memeriksa ketersediaan booking
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbw7qRvhQeKEt2-zQ6mvnU1jdghL3WtuLp9Jh-00BdKeJHdBtWSs8YyLJCzZ6g3uDZRWtQ/exec';
+        
+        const response = await axios.post(scriptUrl, {
+            tanggal_foto,
+            jam_foto
+        });
+
+        // Mengecek apakah ada booking yang sudah ada
+        if (response.data.available) {
+            res.json({ available: true });
+        } else {
+            res.json({ available: false });
+        }
+    } catch (error) {
+        console.error('Error checking booking:', error);
+        res.status(500).json({ error: 'Error checking booking availability' });
+    }
+});
+
 
 // Endpoint untuk membuat link pembayaran Midtrans
 app.post('/midtrans-payment', async (req, res) => {
@@ -119,6 +144,7 @@ app.post('/midtrans-notification', async (req, res) => {
                     headers: { 'Content-Type': 'application/json' }
                 });
             }
+
         }
 
         // Kirim respons sukses ke Midtrans
