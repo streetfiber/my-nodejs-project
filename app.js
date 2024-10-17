@@ -17,16 +17,25 @@ const paymentData = [];
 const CLIENT_KEY = 'SB-Mid-client-HtrBVqThPeJpzv-l'; // Client Key langsung dimasukkan
 const SERVER_KEY = 'SB-Mid-server-9cEe9pBpmC8XuB0zOw-A-Huq'; // Server Key langsung dimasukkan
 
+// Endpoint untuk mengecek ketersediaan
 app.get('/check-availability', async (req, res) => {
+    const { tanggal_foto, jam_foto } = req.query; // Mengambil parameter dari query string
     try {
         const response = await fetch('https://script.google.com/macros/s/AKfycbzRBxkZxSbD8iNZk3yw79MFS4kVeqdUFbDE2iJ7WUDH14U2aZJPEuf4IgTuE2dyb9WCWA/exec');
         const bookings = await response.json();
-        res.json(bookings);
+
+        // Cek ketersediaan
+        const isAvailable = !bookings.some(booking => 
+            booking.tanggal_foto === tanggal_foto && booking.jam_foto === jam_foto
+        );
+
+        res.json({ available: isAvailable });
     } catch (error) {
         console.error('Error fetching bookings:', error);
         res.status(500).json({ error: 'Error fetching bookings' });
     }
 });
+
 
 // Endpoint untuk membuat link pembayaran Midtrans
 app.post('/midtrans-payment', async (req, res) => {
