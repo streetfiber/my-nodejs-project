@@ -20,7 +20,7 @@ const SERVER_KEY = 'SB-Mid-server-9cEe9pBpmC8XuB0zOw-A-Huq'; // Server Key langs
 // Endpoint untuk mengecek ketersediaan
 app.get('/check-availability', async (req, res) => {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzRBxkZxSbD8iNZk3yw79MFS4kVeqdUFbDE2iJ7WUDH14U2aZJPEuf4IgTuE2dyb9WCWA/exec');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbw7qRvhQeKEt2-zQ6mvnU1jdghL3WtuLp9Jh-00BdKeJHdBtWSs8YyLJCzZ6g3uDZRWtQ/exec');
         const bookings = await response.json();
 
         console.log(bookings); // Tambahkan log untuk memeriksa isi bookings
