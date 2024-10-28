@@ -41,43 +41,12 @@ app.get('/check-availability', async (req, res) => {
 
     console.log(`Cek jadwal untuk Tanggal Foto: ${tanggal_foto}, Jam Foto: ${jam_foto}`);
 
-    if (!tanggal_foto || !jam_foto) {
-        return res.status(400).json({ success: false, message: 'Tanggal foto dan jam foto harus disertakan.' });
-    }
+    // Panggil fungsi checkAvailability di Apps Script
+    const availabilityResponse = checkAvailability(tanggal_foto, jam_foto);
 
-    try {
-        // Mengambil data dari Google Sheets
-        const response = await axiosInstance.get();
-        console.log('Ini adalah response lengkap dari Google Apps Script >>>>>>>>>>', response);
-        console.log('Ini adalah response.data >>>>>>>>>>>', response.data);
-
-        // Pastikan response.data.data ada sebelum mengaksesnya
-        const data = response.data.data;
-        console.log('ini adalah respon dari const data', data)
-        if (!data || data.length === 0) {
-            // Jika data kosong, kembalikan pesan bahwa data tidak ditemukan
-            return res.status(200).json({ success: false, message: 'Data tidak ditemukan di Google Sheets.' });
-        }
-
-        // Memeriksa ketersediaan
-        const isAvailable = data.every(row => {
-            const rowTanggalFoto = formatTanggal(row.tanggal_foto);
-            const rowJamFoto = row.jam_foto;
-            return rowTanggalFoto !== tanggal_foto || rowJamFoto !== jam_foto;
-        });
-        
-        console.log('Status ketersediaan slot (isAvailable) >>>>>>>>>>>>>>>>>>', isAvailable);
-
-        if (!isAvailable) {
-            return res.status(200).json({ success: false, message: 'Slot waktu tidak tersedia.' });
-        } else {
-            return res.status(200).json({ success: true, message: 'Slot waktu tersedia.' });
-        }
-    } catch (error) {
-        console.error(">>> Error saat mengecek ketersediaan:", error);
-        return res.status(500).json({ success: false, message: 'Terjadi kesalahan pada server.' });
-    }
+    res.status(200).json(availabilityResponse);
 });
+
 
 
 
