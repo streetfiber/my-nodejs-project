@@ -28,6 +28,28 @@ const formatTanggal = (tanggal) => {
 
 const baseUrl = "https://script.google.com/macros/s/AKfycbxsa6iGO6C41jqZ-BPhvJWmi73TYVmUdpXNfXdyy34FkGZrdRQ-vw_NLqWO4w2_l5lf/exec"; // Ganti dengan URL skrip Apps Script Anda
 
+app.get('/check-available-times', async (req, res) => {
+    const { tanggal_foto } = req.query;  // Mengambil tanggal dari query parameter
+    console.log(`Memeriksa jadwal untuk tanggal: ${tanggal_foto}`);
+
+    // Mendapatkan data dari Google Spreadsheet
+    const url = `https://script.google.com/macros/s/AKfycbx6RtaXOKIVWslbdCIR_Ic_yhpzijFHNtx3L5-LT25cluf4aqAK-xBB8-VQJXBLsleX/exec?tanggal_foto=${tanggal_foto}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const result = await response.json();
+        
+        // Filter jam berdasarkan tanggal
+        const times = result.filter(item => item.tanggal_foto === tanggal_foto).map(item => item.jam_foto);
+        
+        res.status(200).json({ times });
+    } catch (error) {
+        console.error('Error fetching available times:', error);
+        res.status(500).json({ error: 'Error fetching available times' });
+    }
+});
 
 // Fungsi untuk memeriksa ketersediaan
 async function checkAvailability(tanggal_foto, jam_foto) {
