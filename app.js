@@ -40,6 +40,7 @@ async function checkAvailability(tanggal_foto, jam_foto) {
             throw new Error('Network response was not ok');
         }
         const result = await response.json();
+        console.log('Respons ketersediaan dari Google Apps Script:', result); // Catat respons
         return result.available; // Sesuaikan dengan format respons dari Apps Script
     } catch (error) {
         console.error('Error checking availability:', error);
