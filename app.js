@@ -40,7 +40,7 @@ app.get('/check-available-times', async (req, res) => {
             throw new Error('Network response was not ok');
         }
         const result = await response.json();
-        
+        console.log('Response dari Apps Script:', result); // Menampilkan hasil dari Apps Script
         // Filter jam berdasarkan tanggal
         const times = result.filter(item => item.tanggal_foto === tanggal_foto).map(item => item.jam_foto);
         
