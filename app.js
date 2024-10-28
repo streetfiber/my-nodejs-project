@@ -42,7 +42,7 @@ app.get('/check-availability', async (req, res) => {
     console.log(`Cek jadwal untuk Tanggal Foto: ${tanggal_foto}, Jam Foto: ${jam_foto}`);
 
     // Panggil fungsi checkAvailability di Apps Script
-    const availabilityResponse = checkAvailability(tanggal_foto, jam_foto);
+    const availabilityResponse = await checkAvailability(tanggal_foto, jam_foto);
 
     res.status(200).json(availabilityResponse);
 });
