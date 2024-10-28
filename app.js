@@ -26,7 +26,7 @@ const formatTanggal = (tanggal) => {
     return `${year}-${month}-${day}`;
 };
 
-const baseUrl = "https://script.google.com/macros/s/AKfycbw7qRvhQeKEt2-zQ6mvnU1jdghL3WtuLp9Jh-00BdKeJHdBtWSs8YyLJCzZ6g3uDZRWtQ/exec"; // Ganti dengan URL skrip Apps Script Anda
+const baseUrl = "https://script.google.com/macros/s/AKfycbxsa6iGO6C41jqZ-BPhvJWmi73TYVmUdpXNfXdyy34FkGZrdRQ-vw_NLqWO4w2_l5lf/exec"; // Ganti dengan URL skrip Apps Script Anda
 
 
 // Fungsi untuk memeriksa ketersediaan
