@@ -50,13 +50,12 @@ app.get('/check-availability', async (req, res) => {
         // Mengambil data dari Google Sheets
         const response = await axiosInstance.get();
         console.log('ini datalah respone >>>>>>>>>>',response)
-        console.log('ini datalah data >>>>>>>>>>',data)
-        console.log('ini datalah response.data >>>>>>>>>>>',response.data)
+     
         const data = response.data.data;
-        console.log('ini datalah response.data.data >>>>>>>>>>>>>>>>>>',response.data.data)
+        console.log('ini datalah response.data >>>>>>>>>>>',response.data)
+        console.log('ini datalah response.data.data >>>>>>>>>>>>>>>>>>',data)
         // Memeriksa ketersediaan
         const isAvailable = data.every(row => {
-            console.log('ini adalag isAvailable >>>>>>>>>>>>>>>>>>',isAvailable)
             const rowTanggalFoto = formatTanggal(row.tanggal_foto);
             const rowJamFoto = row.jam_foto;
             return rowTanggalFoto !== tanggal_foto || rowJamFoto !== jam_foto;
