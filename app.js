@@ -26,12 +26,14 @@ const formatTanggal = (tanggal) => {
     return `${year}-${month}-${day}`;
 };
 
-const baseUrl = "https://script.google.com/macros/s/AKfycbxuomwV8DrnINqimjgJL-CdE-5exRiVJfhezlGV1_RI3Q3h2jBY3smGTdBC7_Q4-gSUAw/exec"; // Ganti dengan URL skrip Apps Script Anda
+const baseUrl = "https://script.google.com/macros/s/AKfycbw7qRvhQeKEt2-zQ6mvnU1jdghL3WtuLp9Jh-00BdKeJHdBtWSs8YyLJCzZ6g3uDZRWtQ/exec"; // Ganti dengan URL skrip Apps Script Anda
 
 
 // Fungsi untuk memeriksa ketersediaan
 async function checkAvailability(tanggal_foto, jam_foto) {
     const url = `${baseUrl}?tanggal_foto=${tanggal_foto}&jam_foto=${jam_foto}`;
+    console.log('Memeriksa ketersediaan di URL:', url); // Catat URL
+
     try {
         const response = await fetch(url);
         if (!response.ok) {
