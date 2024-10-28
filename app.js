@@ -44,14 +44,15 @@ app.get('/check-available-times', async (req, res) => {
         // Filter jam berdasarkan tanggal
         // Filter jam berdasarkan tanggal
         const times = result.filter(item => item.tanggal_foto === tanggal_foto).map(item => item.jam_foto.replace('_WIT', ''));
+        // Memfilter jam berdasarkan tanggal
+        const bookedTimes = times.filter((item, index, self) => self.indexOf(item) === index); // Menghilangkan duplikat jam
 
-        
-        res.status(200).json({ times });
-    } catch (error) {
+        res.status(200).json({ times: bookedTimes }); // Mengembalikan array 'times'
+        } catch (error) {
         console.error('Error fetching available times:', error);
         res.status(500).json({ error: 'Error fetching available times' });
-    }
-});
+        }
+    });
 
 // Fungsi untuk memeriksa ketersediaan
 async function checkAvailability(tanggal_foto, jam_foto) {
