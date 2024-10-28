@@ -28,12 +28,22 @@ const formatTanggal = (tanggal) => {
 
 const baseUrl = "https://script.google.com/macros/s/AKfycbxuomwV8DrnINqimjgJL-CdE-5exRiVJfhezlGV1_RI3Q3h2jBY3smGTdBC7_Q4-gSUAw/exec"; // Ganti dengan URL skrip Apps Script Anda
 
-const axiosInstance = axios.create({
-    baseURL: baseUrl,
-    headers: {
-        "Content-Type": "application/json"
+
+// Fungsi untuk memeriksa ketersediaan
+async function checkAvailability(tanggal_foto, jam_foto) {
+    const url = `${baseUrl}?tanggal_foto=${tanggal_foto}&jam_foto=${jam_foto}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const result = await response.json();
+        return result.available; // Sesuaikan dengan format respons dari Apps Script
+    } catch (error) {
+        console.error('Error checking availability:', error);
+        return false; // Kembalikan false jika ada kesalahan
     }
-});
+}
 
 
 app.get('/check-availability', async (req, res) => {
@@ -41,10 +51,10 @@ app.get('/check-availability', async (req, res) => {
 
     console.log(`Cek jadwal untuk Tanggal Foto: ${tanggal_foto}, Jam Foto: ${jam_foto}`);
 
-    // Panggil fungsi checkAvailability di Apps Script
+    // Panggil fungsi checkAvailability
     const availabilityResponse = await checkAvailability(tanggal_foto, jam_foto);
 
-    res.status(200).json(availabilityResponse);
+    res.status(200).json({ available: availabilityResponse });
 });
 
 
