@@ -26,7 +26,7 @@ const formatTanggal = (tanggal) => {
     return `${year}-${month}-${day}`;
 };
 
-const baseUrl = "https://script.google.com/macros/s/AKfycbw7qRvhQeKEt2-zQ6mvnU1jdghL3WtuLp9Jh-00BdKeJHdBtWSs8YyLJCzZ6g3uDZRWtQ/exec"; // Ganti dengan URL skrip Apps Script Anda
+const baseUrl = "https://script.google.com/macros/s/AKfycbxuomwV8DrnINqimjgJL-CdE-5exRiVJfhezlGV1_RI3Q3h2jBY3smGTdBC7_Q4-gSUAw/exec"; // Ganti dengan URL skrip Apps Script Anda
 
 const axiosInstance = axios.create({
     baseURL: baseUrl,
@@ -34,26 +34,42 @@ const axiosInstance = axios.create({
         "Content-Type": "application/json"
     }
 });
+
+
 // Endpoint untuk cek ketersediaan jadwal
 app.get('/check-availability', async (req, res) => {
     const { tanggal_foto, jam_foto } = req.query;
+
     console.log(`Cek jadwal untuk Tanggal Foto: ${tanggal_foto}, Jam Foto: ${jam_foto}`);
 
+    if (!tanggal_foto || !jam_foto) {
+        return res.status(400).json({ success: false, message: 'Tanggal foto dan jam foto harus disertakan.' });
+    }
+
     try {
-        const response = await axiosInstance.get(`?tanggal_foto=${tanggal_foto}&jam_foto=${jam_foto}`);
-        console.log('ini data dari appscript',response.data)
-        const bookings = response.data;
-        console.log('bookings >>>>> ', bookings);
-
-        const isAvailable = !bookings.some(booking => 
-            formatTanggal(booking.tanggal_foto) === tanggal_foto && booking.jam_foto === jam_foto
-        );
-
-        res.json({ available: isAvailable });
-        console.log('ini isavailable>>>>>>>>>', isAvailable);
+        // Mengambil data dari Google Sheets
+        const response = await axiosInstance.get();
+        console.log('ini datalah respone >>>>>>>>>>',response)
+        console.log('ini datalah data >>>>>>>>>>',data)
+        console.log('ini datalah response.data >>>>>>>>>>>',response.data)
+        const data = response.data.data;
+        console.log('ini datalah response.data.data >>>>>>>>>>>>>>>>>>',response.data.data)
+        // Memeriksa ketersediaan
+        const isAvailable = data.every(row => {
+            console.log('ini adalag isAvailable >>>>>>>>>>>>>>>>>>',isAvailable)
+            const rowTanggalFoto = formatTanggal(row.tanggal_foto);
+            const rowJamFoto = row.jam_foto;
+            return rowTanggalFoto !== tanggal_foto || rowJamFoto !== jam_foto;
+        });
+        console.log('ini adalag isAvailable >>>>>>>>>>>>>>>>>>',isAvailable)
+        if (!isAvailable) {
+            return res.status(200).json({ success: false, message: 'Slot waktu tidak tersedia.' });
+        } else {
+            return res.status(200).json({ success: true, message: 'Slot waktu tersedia.' });
+        }
     } catch (error) {
-        console.error('Error fetching bookings:', error);
-        res.status(500).json({ error: 'Error fetching bookings' });
+        console.error(">>> Error saat mengecek ketersediaan:", error);
+        return res.status(500).json({ success: false, message: 'Terjadi kesalahan pada server.' });
     }
 });
 
