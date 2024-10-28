@@ -53,6 +53,7 @@ app.get('/check-availability', async (req, res) => {
 
     // Panggil fungsi checkAvailability
     const availabilityResponse = await checkAvailability(tanggal_foto, jam_foto);
+    console.log('ini availabelity response',availabilityResponse)
 
     res.status(200).json({ available: availabilityResponse });
 });
