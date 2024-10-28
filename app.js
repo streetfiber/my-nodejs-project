@@ -36,7 +36,6 @@ const axiosInstance = axios.create({
 });
 
 
-// Endpoint untuk cek ketersediaan jadwal
 app.get('/check-availability', async (req, res) => {
     const { tanggal_foto, jam_foto } = req.query;
 
@@ -49,18 +48,26 @@ app.get('/check-availability', async (req, res) => {
     try {
         // Mengambil data dari Google Sheets
         const response = await axiosInstance.get();
-        console.log('ini datalah respone >>>>>>>>>>',response)
-     
+        console.log('Ini adalah response lengkap dari Google Apps Script >>>>>>>>>>', response);
+        console.log('Ini adalah response.data >>>>>>>>>>>', response.data);
+
+        // Pastikan response.data.data ada sebelum mengaksesnya
         const data = response.data.data;
-        console.log('ini datalah response.data >>>>>>>>>>>',response.data)
-        console.log('ini datalah response.data.data >>>>>>>>>>>>>>>>>>',data)
+        console.log('ini adalah respon dari const data', data)
+        if (!data || data.length === 0) {
+            // Jika data kosong, kembalikan pesan bahwa data tidak ditemukan
+            return res.status(200).json({ success: false, message: 'Data tidak ditemukan di Google Sheets.' });
+        }
+
         // Memeriksa ketersediaan
         const isAvailable = data.every(row => {
             const rowTanggalFoto = formatTanggal(row.tanggal_foto);
             const rowJamFoto = row.jam_foto;
             return rowTanggalFoto !== tanggal_foto || rowJamFoto !== jam_foto;
         });
-        console.log('ini adalag isAvailable >>>>>>>>>>>>>>>>>>',isAvailable)
+        
+        console.log('Status ketersediaan slot (isAvailable) >>>>>>>>>>>>>>>>>>', isAvailable);
+
         if (!isAvailable) {
             return res.status(200).json({ success: false, message: 'Slot waktu tidak tersedia.' });
         } else {
@@ -71,6 +78,7 @@ app.get('/check-availability', async (req, res) => {
         return res.status(500).json({ success: false, message: 'Terjadi kesalahan pada server.' });
     }
 });
+
 
 
 // Endpoint untuk membuat link pembayaran Midtrans
