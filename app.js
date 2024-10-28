@@ -17,16 +17,16 @@ const paymentData = [];
 const CLIENT_KEY = 'SB-Mid-client-HtrBVqThPeJpzv-l'; // Client Key langsung dimasukkan
 const SERVER_KEY = 'SB-Mid-server-9cEe9pBpmC8XuB0zOw-A-Huq'; // Server Key langsung dimasukkan
 
-// Fungsi untuk format tanggal
+// Fungsi untuk format tanggal ke "yyyy-MM-dd"
 const formatTanggal = (tanggal) => {
     const date = new Date(tanggal);
-    console.log('Tanggal setelah format:', date); // Log tanggal
-    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = String(date.getFullYear()).slice(-2);
-    return `${day}/${month}/${year}`;
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
 };
-const baseUrl = "https://script.google.com/macros/s/AKfycbxsa6iGO6C41jqZ-BPhvJWmi73TYVmUdpXNfXdyy34FkGZrdRQ-vw_NLqWO4w2_l5lf/exec"; // Ganti dengan URL skrip Apps Script Anda
+
+const baseUrl = "https://script.google.com/macros/s/AKfycbw7qRvhQeKEt2-zQ6mvnU1jdghL3WtuLp9Jh-00BdKeJHdBtWSs8YyLJCzZ6g3uDZRWtQ/exec"; // Ganti dengan URL skrip Apps Script Anda
 
 const axiosInstance = axios.create({
     baseURL: baseUrl,
