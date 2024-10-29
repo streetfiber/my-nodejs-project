@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const midtransClient = require('midtrans-client');
 const axios = require('axios');
 const fetch = require('node-fetch');
+const { v4: uuidv4 } = require('uuid'); // Untuk menggenerate UUID
 
 const app = express();
 app.use(cors());
@@ -27,6 +28,40 @@ const formatTanggal = (tanggal) => {
 };
 
 const baseUrl = "https://script.google.com/macros/s/AKfycbxsa6iGO6C41jqZ-BPhvJWmi73TYVmUdpXNfXdyy34FkGZrdRQ-vw_NLqWO4w2_l5lf/exec"; // Ganti dengan URL skrip Apps Script Anda
+
+// Endpoint untuk mengirim feedback
+app.post('/feedback', (req, res) => {
+    const { name, whatsapp, email, ulasan, penilaian } = req.body;
+    const id_feedback = uuidv4();
+
+    const feedbackEntry = {
+        id_feedback,
+        name,
+        whatsapp,
+        email,
+        ulasan,
+        penilaian
+    };
+
+    console.log('Feedback data dikirim:', feedbackEntry);
+
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbz64PckdFvS9j_P3eFpJNIGJQ8z6OL3T4Y2gmmrl3S_-7TxBjkfHGeQiF4DzFgZ_k8/exec';
+    fetch(scriptUrl, {
+        method: 'POST',
+        body: JSON.stringify(feedbackEntry),
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respon dari Apps Script:', data);
+        res.status(200).json({ message: 'Feedback berhasil dikirim!', data });
+    })
+    .catch(error => {
+        console.error('Gagal mengirim feedback ke Google Sheets:', error);
+        res.status(500).json({ error: 'Gagal mengirim feedback' });
+    });
+});
+
 
 app.get('/check-available-times', async (req, res) => {
     const { tanggal_foto } = req.query;  // Mengambil tanggal dari query parameter
