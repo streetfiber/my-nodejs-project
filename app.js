@@ -40,18 +40,23 @@ app.get('/check-available-times', async (req, res) => {
             throw new Error('Network response was not ok');
         }
         const result = await response.json();
-        console.log('Response dari Apps Script:', result); // Menampilkan hasil dari Apps Script
-        // Filter jam berdasarkan tanggal
-        // Filter jam berdasarkan tanggal
-        const times = result.filter(item => item.tanggal_foto === tanggal_foto).map(item => item.jam_foto.replace('_WIT', ''));
-        // Memfilter jam berdasarkan tanggal
-        const bookedTimes = times.filter((item, index, self) => self.indexOf(item) === index); // Menghilangkan duplikat jam
+        console.log('Response dari Apps Script:', JSON.stringify(result, null, 2));
+        // Cek apakah hasil dari Apps Script adalah array
+        if (Array.isArray(result) && result.length > 0) {
+            // Mengambil hanya "jam_foto" dan menghilangkan "_WIT"
+            const times = result.map(item => item.jam_foto.replace('_WIT', ''));
+            // Menghilangkan duplikasi
+            const bookedTimes = [...new Set(times)];
 
-        res.status(200).json({ times: bookedTimes }); // Mengembalikan array 'times'
-        } catch (error) {
+            res.status(200).json({ times: bookedTimes });
+        } else {
+            console.log("Tidak ada jam yang ditemukan untuk tanggal ini.");
+            res.status(200).json({ times: [] });
+        }
+    } catch (error) {
         console.error('Error fetching available times:', error);
         res.status(500).json({ error: 'Error fetching available times' });
-        }
+    }
     });
 
 // Fungsi untuk memeriksa ketersediaan
