@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Antrian</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        /* Gaya Latar Belakang */
+        body {
+            background-image: url("{{ url_for('static', filename='images/bg3.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Arial', sans-serif;
+        }
+
+       
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Ambil Nomor Antrian</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}  <!-- CSRF token -->        
+
+            <div class="form-group mb-3">
+                {{ form.tiperawat.label(class="form-label") }}
+                {{ form.tiperawat(class="form-control") }}
+            </div>
+
+            <div class="form-group mb-3">
+                {{ form.kategori.label(class="form-label") }}
+                {{ form.kategori(class="form-control") }}
+            </div>
+
+            <div class="form-group mb-3">
+                {{ form.poli.label(class="form-label") }}
+                {{ form.poli(class="form-control") }}
+            </div>
+
+            <div class="form-group mb-3">
+                {{ form.submit.label(class="form-label") }}
+                {{ form.submit(class="form-control") }}
+            </div>
+
+            
+        </form>
+    </div>
+
+    <!-- Tambahkan Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

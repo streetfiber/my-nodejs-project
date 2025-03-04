@@ -1,0 +1,156 @@
+/* Background Fullscreen */
+body{
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+/* Kotak Nomor Antrian */
+.antrian-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+    display: inline-block;
+    margin-top: 100px;
+}
+
+/* Judul */
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Nomor Antrian */
+.nomor-antrian {
+    font-size: 60px;
+    font-weight: bold;
+    color: #f8d210;
+    margin: 20px 0;
+}
+
+/* Informasi Poli & Kategori */
+.info {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Tombol Cetak */
+.btn-cetak {
+    background-color: #f8d210;
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cetak:hover {
+    background-color: #ffcc00;
+    transform: scale(1.1);
+}
+
+.btn-kembali {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Styling Tombol */
+.btn-custom {
+    margin-top: 300px;
+    background: white;
+    color: #0b3b5b;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 10px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-custom:hover {
+    background: #0b3b5b;
+    color: white;
+    transform: scale(1.05);
+}
+
+ /* Container Form */
+ .form-container {
+    background: rgba(255, 255, 255, 0.9);
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    margin: 80px auto;
+    text-align: center;
+}
+
+/* Judul */
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Label */
+label {
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    text-align: left;
+    margin-top: 10px;
+}
+
+/* Dropdown */
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+/* Tombol Buat Antrian */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Modal */
+.modal-content {
+    border-radius: 15px;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.modal-title {
+    font-size: 20px;
+}
+
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+}

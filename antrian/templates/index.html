@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rumah Sakit - Antrian</title>
+    <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+    body{
+        background-image: url("{{url_for ('static', filename='images/bg.png')}}");
+        background-repeat: repeat-x;
+        background-size: cover;
+        background-attachment: scroll;
+    }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="overlay">
+            <div class="container text-center">
+                <!--img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Rumah Sakit" class="logo"-->
+                <h1 class="title"></h1>
+                <h2 class="subtitle"></h2>
+                <a href="{{ url_for('rantri.ambilantrian') }}" class="btn btn-custom">AMBIL ANTRIAN</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

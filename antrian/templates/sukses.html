@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Nomor Antrian</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/bg2.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: #fff;
+        }
+        h2 { color: #f8d210; }
+    </style>
+</head>
+<body>
+
+    <div class="antrian-container">
+        <h2>Nomor Antrian Anda :</h2>
+        <div class="nomor-antrian">{{ nomor }}</div>
+        <p class="info">Tipe rawat: <strong>{{ tipe }}</strong></p>
+        <p class="info">Poli: <strong>{{ poli }}</strong></p>
+        <p class="info">Kategori: <strong>{{ kategori }}</strong></p>
+        <button class="btn-cetak" onclick="printAntrian({{ nomor }})">Cetak</button>
+        <br><br>
+        <a href="{{ url_for('rantri.ambilantrian') }}" class="btn btn-kembali">Kembali</a>
+    </div>
+
+    <script>
+        function printAntrian(nomor) {
+            fetch(`/print/${nomor}`)
+                .then(response => response.json())
+                .then(data => alert(data.message));
+        }
+    </script>
+
+</body>
+</html>
